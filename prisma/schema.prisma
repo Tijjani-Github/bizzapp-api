@@ -46,7 +46,7 @@ model RefreshToken {
 model customer {
   id       String     @id @default(cuid())
   fullName String
-  email    String
+  email    String     @unique
   phone    String
   location String
   complain complain[]
@@ -60,8 +60,8 @@ model complain {
   complain      String
   complaint     customer        @relation(fields: [customerId], references: [id])
   customerId    String
-  attendee      account         @relation(fields: [accountId], references: [id])
-  accountId     String
+  attendee      account?        @relation(fields: [accountId], references: [id])
+  accountId     String?
   feedback      feedback[]
   closed        Boolean         @default(false)
   session       String          @default("active")
@@ -84,10 +84,10 @@ model feedback {
 }
 
 model message {
-  id         Int      @id @default(autoincrement())
-  sender     customer @relation(fields: [customerId], references: [id])
-  customerId String
-  attendee   account  @relation(fields: [accountId], references: [id])
+  id         Int       @id @default(autoincrement())
+  sender     customer? @relation(fields: [customerId], references: [id])
+  customerId String?
+  attendee   account   @relation(fields: [accountId], references: [id])
   accountId  String
 
   @@map("Conversations")
@@ -97,8 +97,8 @@ model inmessage {
   id        Int      @id @default(autoincrement())
   from      account  @relation(name: "FromAccount", fields: [fromId], references: [id])
   fromId    String
-  to        account  @relation(name: "ToAccount", fields: [toId], references: [id])
-  toId      String
+  to        account? @relation(name: "ToAccount", fields: [toId], references: [id])
+  toId      String?
   account   account? @relation(fields: [accountId], references: [id])
   accountId String?
   message   String

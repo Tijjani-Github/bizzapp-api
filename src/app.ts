@@ -5,6 +5,8 @@ import cron from "node-cron";
 import { sayHelloController } from "./controllers";
 import { errorHandler } from "./middlewares";
 import { accroute } from "./routes/account";
+import { cusoute } from "./routes/customers";
+import { complainRoute } from "./routes/complain";
 
 const app = express();
 
@@ -30,6 +32,8 @@ cron.schedule("*/5 * * * *", () => {
 app.get("/", sayHelloController);
 
 app.use("/api/account", accroute);
+app.use("/api", cusoute);
+app.use("/api", complainRoute);
 
 app.use(errorHandler);
 
