@@ -215,6 +215,10 @@ const RefreshToken = async (req: Request, res: Response) => {
 
   try {
     const decoded: any = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+    console.log(decoded);
+    // const expInMilliseconds = decoded.exp * 1000;
+    // const expirationDate = new Date(expInMilliseconds);
+    // console.log(expirationDate);
     const userId = decoded.userId;
 
     const storedToken = await prisma.refreshToken.findUnique({
