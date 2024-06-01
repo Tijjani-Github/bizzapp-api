@@ -94,6 +94,9 @@ const Register = async (req: Request, res: Response) => {
 
 const Login = async (req: Request, res: Response) => {
   const { identifier, password } = req.body;
+  if (!identifier || !password) {
+    return res.status(400).json({ message: "Please fill all fields" });
+  }
   try {
     const user = await prisma.account.findFirst({
       where: {
