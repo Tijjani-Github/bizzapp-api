@@ -9,20 +9,27 @@ datasource db {
 }
 
 model account {
-  id           String         @id @default(cuid())
-  fullName     String
-  gender       String
-  username     String         @unique
-  location     String
-  phone        String
-  email        String         @unique
-  role         String         @default("agent")
-  department   String
-  image        String?
-  password     String         @default("password123")
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  RefreshToken RefreshToken[]
+  id                          String          @id @default(cuid())
+  fullName                    String
+  gender                      String
+  username                    String          @unique
+  location                    String
+  phone                       String
+  email                       String          @unique
+  role                        String          @default("agent")
+  department                  String
+  image                       String?
+  password                    String          @default("password123")
+  createdAt                   DateTime        @default(now())
+  updatedAt                   DateTime        @updatedAt
+  RefreshToken                RefreshToken[]
+  complain                    complain[]
+  message                     message[]
+  sentMessages                inmessage[]     @relation(name: "FromAccount")
+  receivedMessages            inmessage[]     @relation(name: "ToAccount")
+  ownedCollaborations         colaborations[] @relation(name: "OwnerAccount")
+  collaboratingCollaborations colaborations[] @relation(name: "CollaboratorAccount")
+  inmessage                   inmessage[]
 
   @@map("Accounts")
 }
@@ -34,4 +41,87 @@ model RefreshToken {
   accountId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model customer {
+  id       String     @id @default(cuid())
+  fullName String
+  email    String
+  phone    String
+  location String
+  complain complain[]
+  message  message[]
+
+  @@map("Customers")
+}
+
+model complain {
+  id            Int             @id @default(autoincrement())
+  complain      String
+  complaint     customer        @relation(fields: [customerId], references: [id])
+  customerId    String
+  attendee      account         @relation(fields: [accountId], references: [id])
+  accountId     String
+  feedback      feedback[]
+  closed        Boolean         @default(false)
+  session       String          @default("active")
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  status        String          @default("pending")
+  colaborations colaborations[]
+
+  @@map("Complains")
+}
+
+model feedback {
+  id         Int      @id @default(autoincrement())
+  complain   complain @relation(fields: [complainId], references: [id])
+  complainId Int
+  feedback   String
+  rating     Float
+
+  @@map("Feedbacks")
+}
+
+model message {
+  id         Int      @id @default(autoincrement())
+  sender     customer @relation(fields: [customerId], references: [id])
+  customerId String
+  attendee   account  @relation(fields: [accountId], references: [id])
+  accountId  String
+
+  @@map("Conversations")
+}
+
+model inmessage {
+  id        Int      @id @default(autoincrement())
+  from      account  @relation(name: "FromAccount", fields: [fromId], references: [id])
+  fromId    String
+  to        account  @relation(name: "ToAccount", fields: [toId], references: [id])
+  toId      String
+  account   account? @relation(fields: [accountId], references: [id])
+  accountId String?
+  message   String
+
+  @@map("Inmessages")
+}
+
+model colaborations {
+  id            Int      @id @default(autoincrement())
+  owner         account  @relation(name: "OwnerAccount", fields: [accountId], references: [id])
+  accountId     String
+  colaborator   account  @relation(name: "CollaboratorAccount", fields: [colaboratorId], references: [id])
+  colaboratorId String
+  complain      complain @relation(fields: [complainId], references: [id])
+  complainId    Int
+
+  @@map("Collaboration")
+}
+
+model template {
+  id       Int    @id @default(autoincrement())
+  question String
+  answer   String
+
+  @@map("Templates")
 }
