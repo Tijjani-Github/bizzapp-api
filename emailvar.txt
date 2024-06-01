@@ -2,3 +2,17 @@ name
 email
 password
 {{loginlink}}
+
+
+
+{
+  "fullName": "phoenix",
+  "email": "phoenixdahdev@gmail.com",
+  "username": "phoenixdev",
+  "phone": "0704211181",
+  "password": "phoenix",
+  "gender": "male",
+  "department": "ICT",
+  "location": "kano",
+  "role": "admin"
+}
