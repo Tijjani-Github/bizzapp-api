@@ -253,7 +253,7 @@ const GetAllAccount = async (req: Request, res: Response) => {
       return res.status(401).json({ message: "Unauthorized: Invalid token" });
     }
     const users = await prisma.account.findMany();
-    return res.status(200).json({ success: true, users });
+    return res.status(200).json({ success: true, accounts: users });
   } catch (error) {
     console.error("RefreshToken error:", error);
 
