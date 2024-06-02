@@ -31,16 +31,7 @@ const Register = async (req: Request, res: Response) => {
     department,
     role,
   }: account = req.body;
-  if (
-    !fullName ||
-    !email ||
-    !username ||
-    !phone ||
-    !location ||
-    !password ||
-    !gender ||
-    !department
-  ) {
+  if (!fullName || !email || !department) {
     return res.status(400).json({ message: "Please fill all fields" });
   }
 
@@ -62,12 +53,12 @@ const Register = async (req: Request, res: Response) => {
         fullName,
         role: role ? role : "agent",
         email,
-        username,
-        phone,
-        location,
+        username: username ? username : "",
+        phone: phone ? phone : "",
+        location: location ? location : "",
         password: hashedPassword,
         image: image ? image : "",
-        gender,
+        gender: gender ? gender : "",
         department,
       },
     });

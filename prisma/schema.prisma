@@ -11,10 +11,10 @@ datasource db {
 model account {
   id                          String          @id @default(cuid())
   fullName                    String
-  gender                      String
-  username                    String          @unique
-  location                    String
-  phone                       String
+  gender                      String?
+  username                    String?         @unique
+  location                    String?
+  phone                       String?
   email                       String          @unique
   role                        String          @default("agent")
   department                  String
@@ -30,6 +30,7 @@ model account {
   ownedCollaborations         colaborations[] @relation(name: "OwnerAccount")
   collaboratingCollaborations colaborations[] @relation(name: "CollaboratorAccount")
   inmessage                   inmessage[]
+  isactive                    Boolean?
 
   @@map("Accounts")
 }
