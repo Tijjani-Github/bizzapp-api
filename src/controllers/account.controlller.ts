@@ -36,11 +36,10 @@ const Register = async (req: Request, res: Response) => {
   }
 
   try {
-    const [existingUserByEmail, existingUserByUsername] = await Promise.all([
+    const [existingUserByEmail] = await Promise.all([
       prisma.account.findUnique({ where: { email } }),
-      prisma.account.findUnique({ where: { username } }),
     ]);
-    if (existingUserByEmail || existingUserByUsername) {
+    if (existingUserByEmail) {
       return res.status(400).json({ message: "User already exists" });
     }
     const hashedPassword = await bcrypt.hash(
