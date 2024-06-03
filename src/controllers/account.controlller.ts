@@ -244,7 +244,11 @@ const GetAllAccount = async (req: Request, res: Response) => {
     if (!decoded) {
       return res.status(401).json({ message: "Unauthorized: Invalid token" });
     }
-    const users = await prisma.account.findMany();
+    const users = await prisma.account.findMany({
+      include: {
+        department: true,
+      },
+    });
     return res.status(200).json({ success: true, accounts: users });
   } catch (error) {
     console.error("RefreshToken error:", error);
@@ -311,6 +315,7 @@ const getAgentById = async (req: Request, res: Response) => {
         inmessage: true,
         collaboratingCollaborations: true,
         ownedCollaborations: true,
+        department: true,
       },
     });
     if (!user) {
