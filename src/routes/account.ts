@@ -7,7 +7,7 @@ import {
   getAgentById,
   GetallCollaboratons,
 } from "../controllers/account.controlller";
-import { getAlldepartments } from "src/controllers/derpartment,cnt";
+import { getAlldepartments } from "../controllers/derpartment,cnt";
 import { Router } from "express";
 
 const accroute = Router();
