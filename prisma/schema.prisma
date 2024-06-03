@@ -70,6 +70,7 @@ model complain {
   updatedAt     DateTime        @updatedAt
   status        String          @default("pending")
   colaborations colaborations[]
+  escalated     Boolean?        @default(false)
 
   @@map("Complains")
 }
