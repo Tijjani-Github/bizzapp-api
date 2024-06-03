@@ -281,6 +281,13 @@ const getAgentById = async (req: Request, res: Response) => {
     }
     const user = await prisma.account.findUnique({
       where: { id },
+      include: {
+        complain: true,
+        message: true,
+        inmessage: true,
+        collaboratingCollaborations: true,
+        ownedCollaborations: true,
+      },
     });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
