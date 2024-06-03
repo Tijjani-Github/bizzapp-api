@@ -30,7 +30,7 @@ model account {
   ownedCollaborations         colaborations[] @relation(name: "OwnerAccount")
   collaboratingCollaborations colaborations[] @relation(name: "CollaboratorAccount")
   inmessage                   inmessage[]
-  isactive                    Boolean?
+  isactive                    Boolean?        @default(false)
 
   @@map("Accounts")
 }
