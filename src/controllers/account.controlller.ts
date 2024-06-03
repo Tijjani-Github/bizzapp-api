@@ -52,7 +52,7 @@ const Register = async (req: Request, res: Response) => {
         fullName,
         role: role ? role : "agent",
         email,
-        username: username ? username : "",
+        username: username ? username : email,
         phone: phone ? phone : "",
         location: location ? location : "",
         password: hashedPassword,
