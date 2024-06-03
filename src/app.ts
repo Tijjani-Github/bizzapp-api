@@ -8,6 +8,7 @@ import { accroute } from "./routes/account";
 import { cusoute } from "./routes/customers";
 import { complainRoute } from "./routes/complain";
 import { templateRoute } from "./routes/templates";
+import { feed } from "./routes/feedback";
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use("/api/account", accroute);
 app.use("/api", cusoute);
 app.use("/api", complainRoute);
 app.use("/api", templateRoute);
+app.use("/api", feed);
 
 app.use(errorHandler);
 
