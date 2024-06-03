@@ -8,6 +8,14 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+model department {
+  id         Int       @id @default(autoincrement())
+  name       String
+  accounts   account[] @relation("DepartmentAccounts")
+  supervisor account?  @relation("SupervisorAccount", fields: [accountId], references: [id])
+  accountId  String?
+}
+
 model account {
   id                          String          @id @default(cuid())
   fullName                    String
@@ -17,7 +25,9 @@ model account {
   phone                       String?
   email                       String          @unique
   role                        String          @default("agent")
-  department                  String
+  departmentId                Int?
+  department                  department?     @relation("DepartmentAccounts", fields: [departmentId], references: [id])
+  supervisedDepartments       department[]    @relation("SupervisorAccount")
   image                       String?
   password                    String          @default("password123")
   createdAt                   DateTime        @default(now())

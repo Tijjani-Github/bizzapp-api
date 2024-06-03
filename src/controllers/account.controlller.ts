@@ -28,10 +28,10 @@ const Register = async (req: Request, res: Response) => {
     password,
     image,
     gender,
-    department,
     role,
+    departmentId,
   }: account = req.body;
-  if (!fullName || !email || !department) {
+  if (!fullName || !email || !departmentId) {
     return res.status(400).json({ message: "Please fill all fields" });
   }
 
@@ -58,7 +58,7 @@ const Register = async (req: Request, res: Response) => {
         password: hashedPassword,
         image: image ? image : "",
         gender: gender ? gender : "",
-        department,
+        departmentId: Number(departmentId),
       },
     });
     const { password: _, ...rest } = user;
@@ -98,13 +98,6 @@ const Login = async (req: Request, res: Response) => {
       return res
         .status(400)
         .json({ message: "Invalid email/username or password" });
-    }
-
-    if (!user.password) {
-      return res.status(400).json({
-        message:
-          "Account was created with Google Auth. Create a password or login with Google",
-      });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);

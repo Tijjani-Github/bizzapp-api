@@ -7,6 +7,7 @@ import {
   getAgentById,
   GetallCollaboratons,
 } from "../controllers/account.controlller";
+import { getAlldepartments } from "src/controllers/derpartment,cnt";
 import { Router } from "express";
 
 const accroute = Router();
@@ -18,5 +19,6 @@ accroute.get("/auth/refresh-token", RefreshToken);
 accroute.get("/accounts", GetAllAccount);
 accroute.get("/account?:id", getAgentById);
 accroute.get("/collaborations", GetallCollaboratons);
+accroute.get("/departments", getAlldepartments);
 
 export { accroute };
