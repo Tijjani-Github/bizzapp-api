@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../utils/prisma";
+import jwt from "jsonwebtoken";
 
 const RegisterNewCustomer = async (req: Request, res: Response) => {
   const { fullName, email, phone, location } = req.body;
@@ -70,4 +71,42 @@ const CreateComplaint = async (req: Request, res: Response) => {
   }
 };
 
-export { RegisterNewCustomer, CreateComplaint };
+const GetAllCustomers = async (req: Request, res: Response) => {
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized: No token provided" });
+  }
+
+  try {
+    const decoded: any = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+
+    if (!decoded) {
+      return res.status(401).json({ message: "Unauthorized: Invalid token" });
+    }
+
+    const customers = await prisma.customer.findMany({
+      include: {
+        complain: true,
+      },
+    });
+
+    return res.status(200).json({
+      message: "customers retrieved successfully",
+      data: customers,
+    });
+  } catch (error) {
+    console.error("Token error:", error);
+
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({ message: "Unauthorized: Token expired" });
+    }
+
+    if (error.name === "JsonWebTokenError") {
+      return res.status(401).json({ message: "Unauthorized: Invalid token" });
+    }
+
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+export { RegisterNewCustomer, CreateComplaint, GetAllCustomers };
