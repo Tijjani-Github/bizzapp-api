@@ -285,7 +285,7 @@ const getAgentById = async (req: Request, res: Response) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    return res.status(200).json({ success: true, user });
+    return res.status(200).json({ success: true, agent: user });
   } catch (error) {
     console.error("Login error:", error);
     return res.status(500).json({ message: "Something went wrong" });
