@@ -5,6 +5,7 @@ import {
   RefreshToken,
   GetAllAccount,
   getAgentById,
+  GetallCollaboratons,
 } from "../controllers/account.controlller";
 import { Router } from "express";
 
@@ -16,5 +17,6 @@ accroute.post("/auth/change-password", ChangePassword);
 accroute.get("/auth/refresh-token", RefreshToken);
 accroute.get("/accounts", GetAllAccount);
 accroute.get("/account?:id", getAgentById);
+accroute.get("/collaborations", GetallCollaboratons);
 
 export { accroute };
