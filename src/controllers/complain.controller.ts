@@ -50,6 +50,7 @@ const GetAllComplaints = async (req: Request, res: Response) => {
 const acceptAcomplain = async (req: Request, res: Response) => {
   const token = req.headers.authorization?.split(" ")[1];
   const id = req.query.id as string;
+  console.log(id);
   if (!token) {
     return res.status(401).json({ message: "Unauthorized: No token provided" });
   }
