@@ -19,7 +19,11 @@ const GetAllComplaints = async (req: Request, res: Response) => {
     const complaints = await prisma.complain.findMany({
       include: {
         complaint: true,
-        attendee: true,
+        attendee: {
+          include: {
+            department: true,
+          },
+        },
         feedback: true,
       },
     });
